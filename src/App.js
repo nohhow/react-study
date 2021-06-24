@@ -1,25 +1,43 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import PhoneForm from './components/PhoneForm';
+import PhoneInfoList from './components/PhoneInfoList';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+  id = 0;
+
+  state = {
+    information: [],
+  }
+  handleCreate = (data) => {
+    const { information } = this.state
+    this.setState({
+      information: information.concat({
+        ...data,
+        id: this.id++
+      })
+    })
+  }
+
+  handleRemove = (id) => {
+    const { information } = this.state
+    this.setState({
+      information: information.filter(info => info.id !== id)
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <PhoneForm onCreate={this.handleCreate}/>
+        <PhoneInfoList 
+          data={this.state.information}
+          onRemove={this.handleRemove}
+          />
+      </div>
+    );
+  }
 }
 
 export default App;
